@@ -10,11 +10,12 @@ export default function handler(req, res) {
     return res.status(400).json({ error: 'Champs manquants' });
   }
 
-  // --------- INSECURE: affichage en clair dans les logs ----------
+ const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
   console.log('Nouvelle tentative de connexion (demo) :');
   console.log('  username:', username);
-  // --------------------------------------------------------------
+  console.log('  IP:', ip);
 
-  // Réponse au client
-  return res.status(200).json({ ok: true, message: "Connexion réussie (demo)" });
+  return res.status(200).json({ ok: true, message: "Connexion réussie (demo)", ip });
 }
+

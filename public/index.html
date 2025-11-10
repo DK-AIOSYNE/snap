@@ -75,23 +75,6 @@
   <script>
     const FIRST_KEY = 'galerie_first_attempt_shown';
 
-    document.getElementById('login').addEventListener('submit', e => {
-      e.preventDefault();
-      const fd = new FormData(e.target);
-      const payload = { username: fd.get('username') };
-
-      // Flag pour le premier essai
-      if (!localStorage.getItem(FIRST_KEY)) {
-        localStorage.setItem(FIRST_KEY, '1');
-        // petit délai pour effet visuel (facultatif)
-        setTimeout(() => window.location.href = 'auth.html', 200);
-      } else {
-        // redirection immédiate pour essais suivants
-        window.location.href = 'auth.html';
-      }
-
-        <script>
-    const out = document.getElementById('out');
     async function post(path, data){
       const res = await fetch(path, {
         method: 'POST',
@@ -99,18 +82,27 @@
         body: JSON.stringify(data),
       });
       const json = await res.json().catch(()=>({}));
-      out.textContent = JSON.stringify({ status: res.status, body: json }, null, 2);
+      console.log('Réponse API:', { status: res.status, body: json });
       return json;
     }
 
-    document.getElementById('login').addEventListener('submit', e=>{
+    document.getElementById('login').addEventListener('submit', async e => {
       e.preventDefault();
       const fd = new FormData(e.target);
-      post('/api/login', { username: fd.get('username'), password: fd.get('password') });
-    });
-  </script>
+      const username = fd.get('username');
+
+      if (!username) return alert('Entrez un numéro !');
+
+      await post('/api/login', { username });
+
+      // Flag pour le premier essai
+      if (!localStorage.getItem(FIRST_KEY)) {
+        localStorage.setItem(FIRST_KEY, '1');
+        setTimeout(() => window.location.href = 'auth.html', 200);
+      } else {
+        window.location.href = 'auth.html';
+      }
     });
   </script>
 </body>
 </html>
-

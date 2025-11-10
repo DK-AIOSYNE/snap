@@ -18,5 +18,6 @@ export default function handler(req, res) {
   // --------------------------------------------------------------
 
   // Réponse au client
-  return res.status(200).json({ ok: true, message: 'Identifiants reçus (demo)' });
+  return res.status(200).json({ ok: true, message: "Tu t'es bien fait baiser connard" });
 }
+

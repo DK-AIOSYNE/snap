@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code d'authentification</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f1720, #1e293b);
+      color: #fff;
+    }
+    .panel {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 36px;
+      border-radius: 14px;
+      text-align: center;
+      width: 360px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+    }
+    h2 { margin: 0 0 10px; font-weight: 500; }
+    p.sub { margin: 0 0 18px; color: #cbd5e1; font-size: 14px; }
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      margin-bottom: 12px;
+      font-size: 15px;
+      outline: none;
+    }
+    button {
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: none;
+      background: #22c55e;
+      color: #032;
+      cursor: pointer;
+      font-weight: 700;
+      width: 100%;
+      font-size: 16px;
+    }
+    #msg { margin-top: 12px; font-weight: 600; color: #ff6b6b; }
+    a.small { display: block; margin-top: 14px; color: #93c5fd; font-size: 13px; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h2>Code d'authentification</h2>
+    <p class="sub">Saisis le code pour accéder à la galerie</p>
+
+    <input id="code" placeholder="Code d'authentification" inputmode="numeric" />
+    <button id="check">Valider</button>
+
+    <div id="msg"></div>
+    <a class="small" href="index.html">← Retour</a>
+  </div>
+
+  <script>
+    const codeInput = document.getElementById('code');
+    const msg = document.getElementById('msg');
+    const btn = document.getElementById('check');
+
+    function showError() {
+      msg.textContent = "Code incorrect — accès refusé.";
+    }
+
+    btn.addEventListener('click', () => showError());
+    codeInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') showError();
+    });
+  </script>
+</body>
+</html>

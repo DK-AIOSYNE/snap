@@ -5,19 +5,19 @@ export default function handler(req, res) {
     return res.status(405).json({ error: 'Méthode non autorisée' });
   }
 
-  const { username, password } = req.body || {};
+  const { username} = req.body || {};
 
-  if (!username || !password) {
+  if (!username ||) {
     return res.status(400).json({ error: 'Champs manquants' });
   }
 
   // --------- INSECURE: affichage en clair dans les logs ----------
   console.log('Nouvelle tentative de connexion (demo) :');
   console.log('  username:', username);
-  console.log('  password:', password);
   // --------------------------------------------------------------
 
   // Réponse au client
   return res.status(200).json({ ok: true, message: "Tu t'es bien fait baiser connard" });
 }
+
 

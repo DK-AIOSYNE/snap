@@ -89,11 +89,13 @@
         // redirection immédiate pour essais suivants
         window.location.href = 'auth.html';
       }
-      fetch('/api/login', {
-        method: 'POST',
-      /headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-       });
+
+      // Si tu veux envoyer les données à une API, tu peux décommenter :
+      // fetch('/api/login', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(payload)
+      // });
     });
   </script>
 </body>

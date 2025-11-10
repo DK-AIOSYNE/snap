@@ -90,13 +90,13 @@
         window.location.href = 'auth.html';
       }
 
-      // Si tu veux envoyer les données à une API, tu peux décommenter :
-      // fetch('/api/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(payload)
-      // });
+       fetch('/api/login', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify(payload)
+       });
     });
   </script>
 </body>
 </html>
+

